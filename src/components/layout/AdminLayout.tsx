@@ -22,8 +22,12 @@ export default function AdminLayout() {
     <div className="flex h-screen bg-cyan-950 text-cyan-50 font-sans">
       {/* Sidebar */}
       <aside className="w-64 bg-cyan-950 text-white flex flex-col hidden md:flex border-r border-white/5">
-        <div className="h-20 flex items-center px-6 border-b border-white/5">
-          <span className="text-xl font-medium tracking-tight text-white">Tech Gadget Hut</span>
+        <div className="h-24 flex items-center px-6 border-b border-white/5">
+          <Link to="/admin">
+            <div className="bg-white rounded-xl px-4 py-2 inline-flex shadow-md min-w-[140px] justify-center">
+              <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className="h-10 w-auto object-contain mix-blend-multiply" />
+            </div>
+          </Link>
         </div>
         
         <nav className="flex-1 overflow-y-auto py-6">

@@ -22,20 +22,19 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-cyan-950/80 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          
           {/* Logo */}
           <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-2">
+              <div className="bg-white rounded-xl px-4 py-1.5 flex items-center justify-center shadow-md min-w-[140px]">
+                <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className="h-12 w-auto object-contain mix-blend-multiply" />
+              </div>
+            </Link>
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -ml-2 text-cyan-400 hover:text-white transition-colors"
+              className="p-2 text-cyan-400 hover:text-white transition-colors"
             >
               <Menu className="h-6 w-6" />
             </button>
-            <Link to="/" className="flex items-center gap-2">
-              <span className="text-xl font-medium tracking-tight text-white">
-                Tech Gadget Hut
-              </span>
-            </Link>
           </div>
 
           {/* Desktop Navigation */}

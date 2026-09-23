@@ -69,6 +69,56 @@ const CarouselSection = ({ title, listings, bgColor, titleColor = "text-white", 
   );
 };
 
+const BrandTicker = () => {
+  const brands = [
+    { id: 'samsung', name: 'SAMSUNG' }, { id: 'apple', name: 'Apple' }, { id: 'lenovo', name: 'Lenovo' },
+    { id: 'vivo', name: 'vivo' }, { id: 'anker', name: 'ANKER' }, { id: 'jbl', name: 'JBL' },
+    { id: 'sony', name: 'SONY' }, { id: 'dell', name: 'DELL' }, { id: 'hp', name: 'hp' },
+    { id: 'oppo', name: 'OPPO' }, { id: 'amazfit', name: 'AMAZFIT' }, { id: 'asus', name: 'ASUS' },
+    { id: 'acer', name: 'acer' }, { id: 'lg', name: 'LG' }, { id: 'google', name: 'Google' },
+    { id: 'microsoft', name: 'Microsoft' }, { id: 'intel', name: 'intel' }, { id: 'amd', name: 'AMD' },
+    { id: 'nokia', name: 'NOKIA' }, { id: 'motorola', name: 'motorola' }, { id: 'xiaomi', name: 'Xiaomi' },
+    { id: 'mi', name: 'MI' }, { id: 'huawei', name: 'HUAWEI' }, { id: 'realme', name: 'realme' },
+    { id: 'oneplus', name: 'OnePlus' }, { id: 'meizu', name: 'MEIZU' },
+    { id: 'tecno', name: 'TECNO' }, { id: 'tcl', name: 'TCL' },
+    { id: 'panasonic', name: 'Panasonic' }, { id: 'philips', name: 'PHILIPS' },
+    { id: 'bose', name: 'BOSE' }, { id: 'sennheiser', name: 'SENNHEISER' }, { id: 'corsair', name: 'CORSAIR' },
+    { id: 'razer', name: 'RAZER' }, { id: 'logitech', name: 'logitech' }, { id: 'steelseries', name: 'steelseries' },
+    { id: 'hyperx', name: 'HYPERX' }, { id: 'roccat', name: 'ROCCAT' }, { id: 'beats', name: 'beats' },
+    { id: 'skullcandy', name: 'Skullcandy' }, { id: 'jabra', name: 'Jabra' }, { id: 'garmin', name: 'GARMIN' },
+    { id: 'fitbit', name: 'fitbit' }, { id: 'gopro', name: 'GoPro' }, { id: 'dji', name: 'DJI' },
+    { id: 'canon', name: 'Canon' }, { id: 'nikon', name: 'Nikon' }, { id: 'nintendo', name: 'Nintendo' },
+    { id: 'playstation', name: 'PlayStation' }
+  ];
+  
+  return (
+    <div className="w-full bg-cyan-950 py-4 overflow-hidden relative flex z-40 border-b border-cyan-900/50">
+      <div className="flex w-fit animate-scroll-infinite hover:[animation-play-state:paused]">
+        <div className="flex items-center min-w-full justify-around">
+          {brands.map((brand, i) => (
+            <div key={i} className="flex items-center justify-center gap-2.5 flex-shrink-0 mx-3 hover:scale-105 transition-transform duration-300">
+              <div className="bg-white/10 p-1.5 rounded-md backdrop-blur-sm border border-white/5">
+                <img src={`/brands/${brand.id}.png`} alt={brand.name} className="h-5 w-5 object-contain rounded-sm" />
+              </div>
+              <span className="text-white/90 font-bold text-sm tracking-wider uppercase font-sans">{brand.name}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center min-w-full justify-around" aria-hidden="true">
+          {brands.map((brand, i) => (
+            <div key={i} className="flex items-center justify-center gap-2.5 flex-shrink-0 mx-3 hover:scale-105 transition-transform duration-300">
+              <div className="bg-white/10 p-1.5 rounded-md backdrop-blur-sm border border-white/5">
+                <img src={`/brands/${brand.id}.png`} alt={brand.name} className="h-5 w-5 object-contain rounded-sm" />
+              </div>
+              <span className="text-white/90 font-bold text-sm tracking-wider uppercase font-sans">{brand.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<any[]>([]);
@@ -108,9 +158,21 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
+      {/* Brand Ticker Bar */}
+      <BrandTicker />
+
       {/* Hero Section */}
-      <section className="relative bg-cyan-950 text-white py-24 sm:py-32 overflow-hidden border-b border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/50 to-cyan-950/20" />
+      <section className="relative bg-cyan-950 text-white pt-6 pb-16 sm:pt-8 sm:pb-24 overflow-hidden border-b border-white/5">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover opacity-90 scale-[1.15] origin-top-left"
+        >
+          <source src="/brands/Drone_filming_building_20260924003857.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/40 via-transparent to-cyan-950/60" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
 
           {/* Colorful Overlapping Gadgets Bar */}

@@ -21,7 +21,11 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 font-sans">
         
         <div>
-          <h3 className="text-white text-lg font-medium tracking-tight mb-4">Tech Gadget Hut</h3>
+          <Link to="/">
+            <div className="bg-white rounded-xl px-6 py-3 inline-flex mb-6 shadow-md min-w-[180px] justify-center">
+              <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className="h-16 w-auto object-contain mix-blend-multiply" />
+            </div>
+          </Link>
           <p className="text-sm leading-relaxed text-cyan-500">
             Your premier destination to buy new, used, and refurbished technology. Discover amazing deals on verified premium gadgets.
           </p>

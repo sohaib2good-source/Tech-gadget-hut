@@ -135,7 +135,7 @@ adminRouter.post('/listings', async (req, res) => {
       data.location = 'Online';
     }
 
-    const { attributes, ...listingData } = data;
+    const { attributes, images: inputImages, ...listingData } = data;
     
     await db.insert(listings).values({
       ...listingData,
@@ -153,6 +153,18 @@ adminRouter.post('/listings', async (req, res) => {
         });
       }
     }
+
+    if (inputImages && Array.isArray(inputImages)) {
+      for (let i = 0; i < inputImages.length; i++) {
+        await db.insert(images).values({
+          id: 'img' + Math.random().toString(36).substring(2, 9),
+          listingId: listingData.id,
+          url: inputImages[i].url,
+          isMain: i === 0,
+          order: i
+        });
+      }
+    }
     
     res.json({ success: true, id: listingData.id });
   } catch (error) {
@@ -163,7 +175,7 @@ adminRouter.post('/listings', async (req, res) => {
 
 adminRouter.put('/listings/:id', async (req, res) => {
   try {
-    const { attributes, ...listingData } = req.body;
+    const { attributes, images: inputImages, ...listingData } = req.body;
     listingData.updatedAt = new Date();
     
     await db.update(listings).set(listingData).where(eq(listings.id, req.params.id));
@@ -176,6 +188,19 @@ adminRouter.put('/listings/:id', async (req, res) => {
           listingId: req.params.id,
           key: attr.key,
           value: attr.value
+        });
+      }
+    }
+
+    if (inputImages && Array.isArray(inputImages)) {
+      await db.delete(images).where(eq(images.listingId, req.params.id));
+      for (let i = 0; i < inputImages.length; i++) {
+        await db.insert(images).values({
+          id: 'img' + Math.random().toString(36).substring(2, 9),
+          listingId: req.params.id,
+          url: inputImages[i].url,
+          isMain: i === 0,
+          order: i
         });
       }
     }

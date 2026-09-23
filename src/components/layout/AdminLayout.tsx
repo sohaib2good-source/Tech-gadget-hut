@@ -1,10 +1,16 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, ShoppingBag, Users, Tags, Settings, LogOut, Box, Building2 } from 'lucide-react';
 import { useAuth } from '../admin/AuthProvider';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const isActive = (path: string) => {
     if (path === '/admin' && location.pathname === '/admin') return true;
@@ -69,7 +75,7 @@ export default function AdminLayout() {
             </li>
             <li>
               <button 
-                onClick={logout}
+                onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-cyan-400 hover:text-white hover:bg-white/5 text-sm font-medium transition-colors border border-transparent text-left"
               >
                 <LogOut className="h-4 w-4" /> Logout

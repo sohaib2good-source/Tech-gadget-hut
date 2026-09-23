@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../components/admin/AuthProvider';
-import { Loader2, Plus, Edit, Trash2, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Loader2, Plus, Edit, Trash2, Search, FilterX } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 export default function ProductsList() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filterParam = searchParams.get('filter');
   const { token } = useAuth();
 
   const fetchProducts = async () => {
@@ -45,10 +47,21 @@ export default function ProductsList() {
     }
   };
 
-  const filteredProducts = products.filter(p => 
-    p.title.toLowerCase().includes(search.toLowerCase()) ||
-    (p.sku && p.sku.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredProducts = products.filter(p => {
+    const matchesSearch = p.title.toLowerCase().includes(search.toLowerCase()) || 
+                          (p.sku && p.sku.toLowerCase().includes(search.toLowerCase()));
+    
+    let matchesFilter = true;
+    if (filterParam === 'active') matchesFilter = p.status === 'published';
+    if (filterParam === 'low_stock') matchesFilter = p.stock > 0 && p.stock <= 5;
+    if (filterParam === 'out_of_stock') matchesFilter = p.stock === 0;
+
+    return matchesSearch && matchesFilter;
+  });
+
+  const clearFilter = () => {
+    setSearchParams({});
+  };
 
   return (
     <div className="space-y-6">
@@ -63,7 +76,7 @@ export default function ProductsList() {
       </div>
 
       <div className="bg-cyan-900 rounded-2xl border border-cyan-800 overflow-hidden">
-        <div className="p-4 border-b border-cyan-800 flex items-center">
+        <div className="p-4 border-b border-cyan-800 flex flex-wrap gap-4 justify-between items-center">
           <div className="relative w-full max-w-md">
             <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-500" />
             <input 
@@ -74,6 +87,16 @@ export default function ProductsList() {
               className="w-full pl-10 pr-4 py-2 bg-cyan-950 border border-cyan-700 rounded-xl text-white placeholder-cyan-600 focus:outline-none focus:border-cyan-500"
             />
           </div>
+          {filterParam && (
+            <button onClick={clearFilter} className="flex items-center gap-2 text-sm text-cyan-400 hover:text-white bg-cyan-950 border border-cyan-700 px-3 py-1.5 rounded-lg transition-colors">
+              <FilterX className="w-4 h-4" />
+              Clear Filter ({
+                filterParam === 'active' ? 'Active' : 
+                filterParam === 'low_stock' ? 'Low Stock' : 
+                filterParam === 'out_of_stock' ? 'Out of Stock' : filterParam
+              })
+            </button>
+          )}
         </div>
 
         {loading ? (

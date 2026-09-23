@@ -1,6 +1,7 @@
 import { ShoppingBag, Users, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../components/admin/AuthProvider';
+import { Link } from 'react-router-dom';
 
 interface Stats {
   totalListings: number;
@@ -41,53 +42,53 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800">
+        <Link to="/admin/listings" className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800 hover:bg-cyan-800 transition-colors block group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm font-medium text-cyan-400 mb-1">Total Products</p>
+              <p className="text-sm font-medium text-cyan-400 mb-1 group-hover:text-cyan-300">Total Products</p>
               <h3 className="text-3xl font-semibold text-white">{stats?.totalListings || 0}</h3>
             </div>
-            <div className="p-3 bg-cyan-800 text-white rounded-xl">
+            <div className="p-3 bg-cyan-800 text-white rounded-xl group-hover:bg-cyan-700 transition-colors">
               <ShoppingBag className="w-5 h-5" />
             </div>
           </div>
-        </div>
+        </Link>
         
-        <div className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800">
+        <Link to="/admin/listings?filter=active" className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800 hover:bg-cyan-800 transition-colors block group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm font-medium text-cyan-400 mb-1">Active Products</p>
+              <p className="text-sm font-medium text-cyan-400 mb-1 group-hover:text-cyan-300">Active Products</p>
               <h3 className="text-3xl font-semibold text-white">{stats?.activeListings || 0}</h3>
             </div>
-            <div className="p-3 bg-cyan-800 text-white rounded-xl">
+            <div className="p-3 bg-cyan-800 text-white rounded-xl group-hover:bg-cyan-700 transition-colors">
               <CheckCircle2 className="w-5 h-5" />
             </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800">
+        <Link to="/admin/listings?filter=low_stock" className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800 hover:bg-cyan-800 transition-colors block group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm font-medium text-cyan-400 mb-1">Low Stock</p>
+              <p className="text-sm font-medium text-cyan-400 mb-1 group-hover:text-cyan-300">Low Stock</p>
               <h3 className="text-3xl font-semibold text-white">{stats?.lowStock || 0}</h3>
             </div>
-            <div className="p-3 bg-cyan-800 text-white rounded-xl">
+            <div className="p-3 bg-cyan-800 text-white rounded-xl group-hover:bg-cyan-700 transition-colors">
               <AlertCircle className="w-5 h-5 text-amber-400" />
             </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800">
+        <Link to="/admin/listings?filter=out_of_stock" className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800 hover:bg-cyan-800 transition-colors block group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-sm font-medium text-cyan-400 mb-1">Out of Stock</p>
+              <p className="text-sm font-medium text-cyan-400 mb-1 group-hover:text-cyan-300">Out of Stock</p>
               <h3 className="text-3xl font-semibold text-white">{stats?.outOfStock || 0}</h3>
             </div>
-            <div className="p-3 bg-cyan-800 text-white rounded-xl">
+            <div className="p-3 bg-cyan-800 text-white rounded-xl group-hover:bg-cyan-700 transition-colors">
               <AlertCircle className="w-5 h-5 text-red-400" />
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

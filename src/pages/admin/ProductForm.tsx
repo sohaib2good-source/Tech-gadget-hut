@@ -26,9 +26,11 @@ export default function ProductForm() {
     condition: 'New',
     status: 'published',
     description: '',
+    color: '',
   });
 
   const [attributes, setAttributes] = useState<{key: string, value: string}[]>([]);
+  const [images, setImages] = useState<{url: string}[]>([]);
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -64,7 +66,11 @@ export default function ProductForm() {
               condition: data.listing.condition,
               status: data.listing.status,
               description: data.listing.description,
+              color: data.listing.color || '',
             });
+            if (data.images && data.images.length > 0) {
+              setImages(data.images.map((img: any) => ({ url: img.url })));
+            }
             // We'd fetch attributes here in a real scenario, skipping for brevity
           }
         } catch (e) {
@@ -86,7 +92,8 @@ export default function ProductForm() {
       
       const payload = {
         ...formData,
-        attributes: attributes.filter(a => a.key && a.value)
+        attributes: attributes.filter(a => a.key && a.value),
+        images: images
       };
 
       const res = await fetch(url, {
@@ -124,6 +131,41 @@ export default function ProductForm() {
     setAttributes(attributes.filter((_, i) => i !== index));
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const files = Array.from(e.target.files);
+    
+    if (images.length + files.length > 5) {
+      alert("You can only upload up to 5 images.");
+      return;
+    }
+
+    setLoading(true);
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      try {
+        const res = await fetch('/api/admin/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setImages(prev => [...prev, { url: data.url }]);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    setLoading(false);
+  };
+
+  const removeImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   if (initialLoading) {
     return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-cyan-500 animate-spin" /></div>;
   }
@@ -149,8 +191,8 @@ export default function ProductForm() {
               <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-cyan-300 mb-1">SKU</label>
-              <input value={formData.sku} onChange={e => setFormData({...formData, sku: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
+              <label className="block text-sm font-medium text-cyan-300 mb-1">Stock Quantity *</label>
+              <input type="number" required value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value)})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
             
             <div>
@@ -173,8 +215,8 @@ export default function ProductForm() {
               <input type="number" step="0.01" required value={formData.price} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-cyan-300 mb-1">Stock Quantity *</label>
-              <input type="number" required value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value)})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
+              <label className="block text-sm font-medium text-cyan-300 mb-1">SKU</label>
+              <input value={formData.sku} onChange={e => setFormData({...formData, sku: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
 
             <div>
@@ -189,11 +231,14 @@ export default function ProductForm() {
             <div>
               <label className="block text-sm font-medium text-cyan-300 mb-1">Status</label>
               <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500">
-                <option value="published">Active / Published</option>
-                <option value="draft">Draft</option>
+                <option value="published">Published</option>
                 <option value="hidden">Hidden</option>
-                <option value="archived">Archived</option>
               </select>
+            </div>
+            
+            <div className="col-span-1 md:col-span-2">
+              <label className="block text-sm font-medium text-cyan-300 mb-1">Color (Optional)</label>
+              <input value={formData.color} onChange={e => setFormData({...formData, color: e.target.value})} placeholder="e.g. Space Gray, Midnight Black" className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
           </div>
 
@@ -220,6 +265,31 @@ export default function ProductForm() {
                 <button type="button" onClick={() => removeAttribute(index)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg">
                   <X className="w-5 h-5" />
                 </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-cyan-900 rounded-2xl border border-cyan-800 p-6 space-y-4">
+          <div className="flex justify-between items-center border-b border-cyan-800 pb-2">
+            <h2 className="text-lg font-medium text-white">Product Images (Max 5)</h2>
+            <label className="text-sm text-cyan-400 hover:text-white flex items-center gap-1 cursor-pointer">
+              <Upload className="w-4 h-4" /> Upload
+              <input type="file" multiple accept="image/*" className="hidden" onChange={handleImageUpload} disabled={images.length >= 5 || loading} />
+            </label>
+          </div>
+          
+          <div className="grid grid-cols-5 gap-4">
+            {images.length === 0 && <p className="text-sm text-cyan-600 col-span-5 italic">No images uploaded.</p>}
+            {images.map((img, index) => (
+              <div key={index} className="relative aspect-square rounded-xl overflow-hidden border border-cyan-700 bg-cyan-950">
+                <img src={img.url} className="w-full h-full object-cover" alt="Uploaded" />
+                <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 p-1 bg-red-500/80 text-white rounded hover:bg-red-600 transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+                {index === 0 && (
+                  <span className="absolute bottom-1 left-1 bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded uppercase font-bold">Main</span>
+                )}
               </div>
             ))}
           </div>

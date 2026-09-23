@@ -139,6 +139,14 @@ export default function ProductDetail() {
               <ShieldCheck className="w-5 h-5 text-cyan-500" />
               <span>Condition: <strong className="text-white">{listing.condition}</strong></span>
             </div>
+            {listing.color && (
+              <div className="flex items-center gap-3 text-sm text-cyan-300 font-medium">
+                <div className="w-5 h-5 rounded-full border border-cyan-500 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-white opacity-80" />
+                </div>
+                <span>Color: <strong className="text-white">{listing.color}</strong></span>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-3 mb-8">

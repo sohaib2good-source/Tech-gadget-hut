@@ -42,6 +42,7 @@ export const listings = sqliteTable('listings', {
   location: text('location').notNull(),
   status: text('status').notNull().default('published'), // 'draft', 'pending', 'published', 'sold', 'archived', 'hidden', 'out_of_stock'
   views: integer('views').notNull().default(0),
+  color: text('color'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 });

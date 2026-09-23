@@ -43,6 +43,7 @@ apiRouter.get('/listings/recent', async (req, res) => {
     .from(listings)
     .leftJoin(images, and(eq(listings.id, images.listingId), eq(images.isMain, true)))
     .leftJoin(categories, eq(listings.categoryId, categories.id))
+    .where(eq(listings.status, 'published'))
     .orderBy(desc(listings.createdAt))
     .limit(8);
     
@@ -56,7 +57,7 @@ apiRouter.get('/listings', async (req, res) => {
   try {
     const { q, category, brand, condition, minPrice, maxPrice } = req.query;
 
-    let conditions = [];
+    let conditions = [eq(listings.status, 'published')];
     
     if (q) {
       conditions.push(sql`${listings.title} LIKE ${'%' + q + '%'}`);
@@ -117,7 +118,7 @@ apiRouter.get('/listings/:slug', async (req, res) => {
     .from(listings)
     .leftJoin(categories, eq(listings.categoryId, categories.id))
     .leftJoin(brands, eq(listings.brandId, brands.id))
-    .where(eq(listings.slug, slug))
+    .where(and(eq(listings.slug, slug), eq(listings.status, 'published')))
     .limit(1);
 
     if (!listingData.length) {

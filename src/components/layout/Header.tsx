@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, User, Heart, Menu, X, MapPin, FileText, ChevronDown } from 'lucide-react';
 
@@ -6,6 +6,13 @@ export default function Header() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,13 +27,13 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-cyan-950/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-cyan-950/80 backdrop-blur-xl transition-all duration-300">
+        <div className={`mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-300 ${isScrolled ? 'h-16 sm:h-20' : 'h-20'}`}>
           {/* Logo */}
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="bg-white rounded-xl px-4 py-1.5 flex items-center justify-center shadow-md min-w-[140px]">
-                <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className="h-12 w-auto object-contain mix-blend-multiply" />
+              <div className={`bg-white rounded-xl flex items-center justify-center shadow-md transition-all duration-300 ${isScrolled ? 'px-3 py-1 min-w-[110px] sm:px-4 sm:py-1.5 sm:min-w-[140px]' : 'px-4 py-1.5 min-w-[140px]'}`}>
+                <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className={`w-auto object-contain mix-blend-multiply transition-all duration-300 ${isScrolled ? 'h-8 sm:h-12' : 'h-12'}`} />
               </div>
             </Link>
             <button 

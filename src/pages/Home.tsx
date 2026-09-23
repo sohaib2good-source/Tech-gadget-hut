@@ -27,25 +27,29 @@ const CarouselSection = ({ title, listings, bgColor, titleColor = "text-white", 
 
           <div
             id={id}
-            className="flex overflow-x-auto gap-6 sm:gap-8 pb-8 snap-x snap-mandatory hide-scrollbar"
+            className="grid grid-cols-2 gap-3 sm:flex sm:overflow-x-auto sm:gap-8 pb-8 sm:snap-x sm:snap-mandatory hide-scrollbar"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {listings.map((listing: any) => (
-              <Link key={listing.id} to={`/product/${listing.slug}`} className="snap-start flex-shrink-0 w-[280px] sm:w-[320px] group flex flex-col bg-cyan-900 rounded-2xl border border-cyan-800 hover:border-cyan-700 hover:-translate-y-1 transition-all duration-300 overflow-hidden shadow-2xl">
-                <div className="aspect-[4/3] w-full bg-cyan-950 relative overflow-hidden border-b border-cyan-800">
+            {listings.map((listing: any, index: number) => (
+              <Link 
+                key={listing.id} 
+                to={`/product/${listing.slug}`} 
+                className={`${index >= 4 ? 'hidden sm:flex' : 'flex'} flex-col sm:snap-start sm:flex-shrink-0 w-full sm:w-[320px] group bg-cyan-900 rounded-xl sm:rounded-2xl border border-cyan-800 hover:border-cyan-700 hover:-translate-y-1 transition-all duration-300 overflow-hidden shadow-lg sm:shadow-2xl`}
+              >
+                <div className="aspect-square sm:aspect-[4/3] w-full bg-cyan-950 relative overflow-hidden border-b border-cyan-800">
                   <img src={listing.imageUrl || 'https://images.unsplash.com/photo-1550009158-9ebf6d173153?auto=format&fit=crop&q=80&w=500'} alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
-                  <div className="absolute top-3 left-3 bg-cyan-900/80 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-medium text-white border border-white/10">
+                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-cyan-900/80 backdrop-blur-md px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-medium text-white border border-white/10">
                     {listing.condition}
                   </div>
                 </div>
-                <div className="p-5 flex flex-col flex-grow items-start">
-                  <span className="text-xs font-medium text-cyan-500 mb-2">{listing.category}</span>
-                  <h3 className="text-lg font-medium tracking-tight mb-4 line-clamp-2 text-white">{listing.title}</h3>
-                  <div className="mt-auto pt-4 flex flex-col items-start gap-1 w-full border-t border-cyan-800/50">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-semibold text-white">Rs. {listing.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                <div className="p-3 sm:p-5 flex flex-col flex-grow items-start">
+                  <span className="text-[10px] sm:text-xs font-medium text-cyan-500 mb-1 sm:mb-2 line-clamp-1">{listing.category}</span>
+                  <h3 className="text-sm sm:text-lg font-medium tracking-tight mb-2 sm:mb-4 line-clamp-2 text-white leading-snug">{listing.title}</h3>
+                  <div className="mt-auto pt-3 sm:pt-4 flex flex-col items-start gap-1 w-full border-t border-cyan-800/50">
+                    <div className="flex flex-col xl:flex-row xl:items-baseline gap-0.5 sm:gap-2">
+                      <span className="text-sm sm:text-xl font-semibold text-white">Rs. {listing.price.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
                       {listing.originalPrice && (
-                        <span className="text-sm text-cyan-600 line-through">Rs. {listing.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                        <span className="text-[10px] sm:text-sm text-cyan-600 line-through">Rs. {listing.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
                       )}
                     </div>
                   </div>
@@ -168,11 +172,11 @@ export default function Home() {
           loop 
           muted 
           playsInline 
-          className="absolute inset-0 w-full h-full object-cover opacity-90 scale-[1.15] origin-top-left"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 brightness-[1.3] scale-[1.15] origin-top-left"
         >
           <source src="/brands/Drone_filming_building_20260924003857.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/40 via-transparent to-cyan-950/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/30 via-transparent to-cyan-950/50 pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
 
           {/* Colorful Overlapping Gadgets Bar */}

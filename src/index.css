@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .animate-scroll-infinite {
-  animation: scroll-infinite 45s linear infinite;
+  animation: scroll-infinite 90s linear infinite;
 }
 
 @keyframes scroll-infinite {

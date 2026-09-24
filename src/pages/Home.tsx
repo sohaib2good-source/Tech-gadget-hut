@@ -34,7 +34,7 @@ const CarouselSection = ({ title, listings, bgColor, titleColor = "text-white", 
               <Link 
                 key={listing.id} 
                 to={`/product/${listing.slug}`} 
-                className={`${index >= 4 ? 'hidden sm:flex' : 'flex'} flex-col sm:snap-start sm:flex-shrink-0 w-full sm:w-[320px] group bg-cyan-900 rounded-xl sm:rounded-2xl border border-cyan-800 hover:border-cyan-700 hover:-translate-y-1 transition-all duration-300 overflow-hidden shadow-lg sm:shadow-2xl`}
+                className={`${index >= 4 ? 'hidden sm:flex' : 'flex'} flex-col sm:snap-start sm:flex-shrink-0 w-full sm:w-[256px] group bg-cyan-900 rounded-xl sm:rounded-2xl border border-cyan-800 hover:border-cyan-700 hover:-translate-y-1 transition-all duration-300 overflow-hidden shadow-lg sm:shadow-2xl`}
               >
                 <div className="aspect-square sm:aspect-[4/3] w-full bg-cyan-950 relative overflow-hidden border-b border-cyan-800">
                   <img src={listing.imageUrl || 'https://images.unsplash.com/photo-1550009158-9ebf6d173153?auto=format&fit=crop&q=80&w=500'} alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
@@ -42,14 +42,14 @@ const CarouselSection = ({ title, listings, bgColor, titleColor = "text-white", 
                     {listing.condition}
                   </div>
                 </div>
-                <div className="p-3 sm:p-5 flex flex-col flex-grow items-start">
+                <div className="p-3 sm:p-4 flex flex-col flex-grow items-start">
                   <span className="text-[10px] sm:text-xs font-medium text-cyan-500 mb-1 sm:mb-2 line-clamp-1">{listing.category}</span>
-                  <h3 className="text-sm sm:text-lg font-medium tracking-tight mb-2 sm:mb-4 line-clamp-2 text-white leading-snug">{listing.title}</h3>
+                  <h3 className="text-sm sm:text-base font-medium tracking-tight mb-2 sm:mb-3 line-clamp-2 text-white leading-snug">{listing.title}</h3>
                   <div className="mt-auto pt-3 sm:pt-4 flex flex-col items-start gap-1 w-full border-t border-cyan-800/50">
                     <div className="flex flex-col xl:flex-row xl:items-baseline gap-0.5 sm:gap-2">
-                      <span className="text-sm sm:text-xl font-semibold text-white">Rs. {listing.price.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
+                      <span className="text-sm sm:text-lg font-semibold text-white">Rs. {listing.price.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
                       {listing.originalPrice && (
-                        <span className="text-[10px] sm:text-sm text-cyan-600 line-through">Rs. {listing.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
+                        <span className="text-[10px] sm:text-xs text-cyan-600 line-through">Rs. {listing.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
                       )}
                     </div>
                   </div>

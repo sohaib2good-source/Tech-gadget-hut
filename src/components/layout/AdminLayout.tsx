@@ -9,7 +9,7 @@ export default function AdminLayout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/admin/login');
   };
 
   const isActive = (path: string) => {

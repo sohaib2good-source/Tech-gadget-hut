@@ -142,6 +142,12 @@ export default function Home() {
     fetch('/api/listings')
       .then(res => res.json())
       .then(data => setAllListings(data));
+
+    if (window.location.search.includes('scrollTo=categories')) {
+      setTimeout(() => {
+        document.getElementById('categories-section')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
   }, []);
 
   const laptops = allListings.filter(l => l.category?.toLowerCase() === 'laptops' || l.category?.toLowerCase().includes('laptop'));
@@ -279,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* Categories */}
-      <section className="py-20 sm:py-28 bg-cyan-950 border-b border-white/5">
+      <section id="categories-section" className="py-20 sm:py-28 bg-cyan-950 border-b border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>

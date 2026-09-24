@@ -47,7 +47,18 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-cyan-400">
             <Link to="/shop" className="hover:text-white transition-colors">Shop</Link>
-            <Link to="/shop" className="hover:text-white transition-colors">Categories</Link>
+            <button 
+              onClick={() => {
+                if (window.location.pathname === '/') {
+                  document.getElementById('categories-section')?.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  navigate('/?scrollTo=categories');
+                }
+              }}
+              className="hover:text-white transition-colors"
+            >
+              Categories
+            </button>
             <Link to="/shop?condition=New" className="hover:text-white transition-colors">New Arrivals</Link>
             <Link to="/shop" className="hover:text-white transition-colors">Deals</Link>
           </nav>

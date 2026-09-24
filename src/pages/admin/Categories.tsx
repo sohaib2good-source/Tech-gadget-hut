@@ -4,18 +4,12 @@ import { Loader2, Plus, Edit, Trash2 } from 'lucide-react';
 
 export default function CategoriesAndBrands() {
   const [categories, setCategories] = useState<any[]>([]);
-  const [brands, setBrands] = useState<any[]>([]);
-  
   const [loadingCats, setLoadingCats] = useState(true);
-  const [loadingBrands, setLoadingBrands] = useState(true);
   
   const { token } = useAuth();
   
   const [editingCatId, setEditingCatId] = useState<string | null>(null);
   const [catFormData, setCatFormData] = useState({ name: '', slug: '' });
-
-  const [editingBrandId, setEditingBrandId] = useState<string | null>(null);
-  const [brandFormData, setBrandFormData] = useState({ name: '', slug: '' });
 
   const fetchCategories = async () => {
     try {
@@ -28,20 +22,8 @@ export default function CategoriesAndBrands() {
     }
   };
 
-  const fetchBrands = async () => {
-    try {
-      const res = await fetch('/api/admin/brands', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.ok) setBrands(await res.json());
-    } finally {
-      setLoadingBrands(false);
-    }
-  };
-
   useEffect(() => {
     fetchCategories();
-    fetchBrands();
   }, [token]);
 
   const handleCatSubmit = async (e: React.FormEvent) => {
@@ -66,27 +48,7 @@ export default function CategoriesAndBrands() {
     }
   };
 
-  const handleBrandSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const url = editingBrandId ? `/api/admin/brands/${editingBrandId}` : '/api/admin/brands';
-      const method = editingBrandId ? 'PUT' : 'POST';
-      
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(brandFormData)
-      });
 
-      if (res.ok) {
-        setBrandFormData({ name: '', slug: '' });
-        setEditingBrandId(null);
-        fetchBrands();
-      }
-    } catch (err) {
-      alert('Error saving brand');
-    }
-  };
 
   const handleCatDelete = async (id: string, name: string) => {
     if (!window.confirm(`Delete category "${name}"?`)) return;
@@ -101,18 +63,7 @@ export default function CategoriesAndBrands() {
     }
   };
 
-  const handleBrandDelete = async (id: string, name: string) => {
-    if (!window.confirm(`Delete brand "${name}"?`)) return;
-    try {
-      const res = await fetch(`/api/admin/brands/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.ok) fetchBrands();
-    } catch (e) {
-      alert('Error deleting');
-    }
-  };
+
 
   return (
     <div className="space-y-12 max-w-5xl mx-auto">
@@ -205,96 +156,6 @@ export default function CategoriesAndBrands() {
           </div>
         </div>
       </div>
-
-      {/* BRANDS SECTION */}
-      <div className="space-y-6 pt-6 border-t border-cyan-800/50">
-        <div>
-          <h1 className="text-2xl font-semibold text-white">Brands Management</h1>
-          <p className="text-sm text-cyan-400 mt-1">Note: Brands added here will be available to select when entering a new product.</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-1">
-            <div className="bg-cyan-900 rounded-2xl border border-cyan-800 p-6">
-              <h2 className="text-lg font-medium text-white mb-4">
-                {editingBrandId ? 'Edit Brand' : 'Add Brand'}
-              </h2>
-              <form onSubmit={handleBrandSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-cyan-300 mb-1">Name</label>
-                  <input 
-                    required 
-                    value={brandFormData.name} 
-                    onChange={e => {
-                      const name = e.target.value;
-                      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                      if(!editingBrandId) setBrandFormData({ name, slug });
-                      else setBrandFormData({ ...brandFormData, name });
-                    }} 
-                    className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:border-cyan-500 outline-none" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-cyan-300 mb-1">Slug</label>
-                  <input 
-                    required 
-                    value={brandFormData.slug} 
-                    onChange={e => setBrandFormData({ ...brandFormData, slug: e.target.value })} 
-                    className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:border-cyan-500 outline-none" 
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button type="submit" className="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl text-sm font-medium transition-colors">
-                    {editingBrandId ? 'Update' : 'Add'}
-                  </button>
-                  {editingBrandId && (
-                    <button type="button" onClick={() => { setEditingBrandId(null); setBrandFormData({name: '', slug: ''}) }} className="bg-cyan-800 hover:bg-cyan-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors">
-                      Cancel
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div className="md:col-span-2">
-            <div className="bg-cyan-900 rounded-2xl border border-cyan-800 overflow-hidden">
-              {loadingBrands ? (
-                <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-cyan-500 animate-spin" /></div>
-              ) : (
-                <table className="w-full text-left text-sm text-cyan-300">
-                  <thead className="bg-cyan-900/50 text-cyan-400 border-b border-cyan-800 font-medium">
-                    <tr>
-                      <th className="px-6 py-4">Name</th>
-                      <th className="px-6 py-4">Slug</th>
-                      <th className="px-6 py-4 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-cyan-800/50">
-                    {brands.map(b => (
-                      <tr key={b.id} className="hover:bg-cyan-800/30 transition-colors">
-                        <td className="px-6 py-4 font-medium text-white">{b.name}</td>
-                        <td className="px-6 py-4 text-cyan-500">{b.slug}</td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end gap-2">
-                            <button onClick={() => { setEditingBrandId(b.id); setBrandFormData({ name: b.name, slug: b.slug }); }} className="p-2 text-cyan-400 hover:bg-cyan-700 rounded-lg">
-                              <Edit className="w-4 h-4" />
-                            </button>
-                            <button onClick={() => handleBrandDelete(b.id, b.name)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg">
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   );
 }

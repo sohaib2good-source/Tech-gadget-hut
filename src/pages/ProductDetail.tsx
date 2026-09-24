@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ShieldCheck, Calendar, Heart, Share2, ShoppingBag } from 'lucide-react';
+import { useCart } from '../components/CartContext';
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState<string>('');
+  const { addToCart } = useCart();
 
   useEffect(() => {
     fetch(`/api/listings/${slug}`)
@@ -150,7 +152,15 @@ export default function ProductDetail() {
           </div>
 
           <div className="flex flex-col gap-3 mb-8">
-            <button className="w-full bg-white text-cyan-950 px-8 py-4 text-sm font-semibold hover:bg-cyan-200 transition-colors rounded-full flex items-center justify-center gap-2">
+            <button 
+              onClick={() => addToCart({
+                id: listing.id,
+                title: listing.title,
+                price: listing.price,
+                imageUrl: images?.[0]?.url
+              })}
+              className="w-full bg-white text-cyan-950 px-8 py-4 text-sm font-semibold hover:bg-cyan-200 transition-colors rounded-full flex items-center justify-center gap-2"
+            >
               <ShoppingBag className="w-5 h-5" /> Add to Cart
             </button>
             <button className="w-full bg-cyan-900 border border-cyan-800 text-white px-8 py-4 text-sm font-semibold hover:bg-cyan-800 transition-colors rounded-full">

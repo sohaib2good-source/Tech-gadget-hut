@@ -17,6 +17,7 @@ import Inventory from './pages/admin/Inventory';
 import Categories from './pages/admin/Categories';
 import Brands from './pages/admin/Brands';
 import { AuthProvider, useAuth } from './components/admin/AuthProvider';
+import { CartProvider } from './components/CartContext';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -29,9 +30,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          {/* Public Routes */}
+      <CartProvider>
+        <AuthProvider>
+          <Routes>
+            {/* Public Routes */}
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="shop" element={<Shop />} />
@@ -53,6 +55,7 @@ export default function App() {
           </Route>
         </Routes>
       </AuthProvider>
+      </CartProvider>
     </BrowserRouter>
   );
 }

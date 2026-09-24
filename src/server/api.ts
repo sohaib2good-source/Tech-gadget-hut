@@ -137,4 +137,20 @@ apiRouter.get('/listings/:slug', async (req, res) => {
   }
 });
 
+// Checkout handling (simulate email/db store)
+apiRouter.post('/checkout', async (req, res) => {
+  try {
+    const { customer, items, total } = req.body;
+    console.log('--- NEW ORDER RECEIVED ---');
+    console.log('Customer:', customer);
+    console.log('Items:', items);
+    console.log('Total: Rs.', total);
+    console.log('--------------------------');
+    // In a real application, you would send an email here using nodemailer, SendGrid, etc.
+    res.json({ success: true, message: 'Order submitted' });
+  } catch (error) {
+    res.status(500).json({ error: 'Checkout failed' });
+  }
+});
+
 export default apiRouter;

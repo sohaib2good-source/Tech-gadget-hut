@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, User, Heart, Menu, X, MapPin, FileText, ChevronDown } from 'lucide-react';
+import { useCart } from '../CartContext';
 
 export default function Header() {
+  const { items, setIsCartOpen } = useCart();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -86,6 +88,17 @@ export default function Header() {
             </button>
             <button className="p-2 text-cyan-400 hover:text-white transition-colors hidden sm:block">
               <Heart className="h-5 w-5" />
+            </button>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="p-2 text-cyan-400 hover:text-white transition-colors relative"
+            >
+              <ShoppingBag className="h-5 w-5" />
+              {items.length > 0 && (
+                <span className="absolute 0 top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center">
+                  {items.length}
+                </span>
+              )}
             </button>
             <button className="p-2 text-cyan-400 hover:text-white transition-colors">
               <User className="h-5 w-5" />

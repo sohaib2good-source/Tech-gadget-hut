@@ -124,20 +124,7 @@ export default function Header() {
             <span className="text-xl font-bold tracking-tight">TechGadget</span>
           </div>
 
-          <button className="w-32 bg-white text-[#42a5f5] font-semibold py-2 rounded mb-6 text-sm hover:bg-gray-50 transition-colors shadow-sm">
-            Login
-          </button>
 
-          <nav className="flex flex-col gap-4 text-sm font-medium">
-            <Link to="#" className="flex items-center gap-3 hover:text-white/80 transition-colors">
-              <MapPin className="w-5 h-5" />
-              Track my Order
-            </Link>
-            <Link to="#" className="flex items-center gap-3 hover:text-white/80 transition-colors">
-              <FileText className="w-5 h-5" />
-              Launch a Complaint
-            </Link>
-          </nav>
         </div>
 
         {/* Bottom White Section - Categories */}

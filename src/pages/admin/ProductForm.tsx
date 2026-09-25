@@ -23,10 +23,12 @@ export default function ProductForm() {
     price: 0,
     originalPrice: 0,
     stock: 0,
-    condition: 'New',
-    status: 'published',
+    condition: '',
+    status: '',
     description: '',
     color: '',
+    badge: '',
+    isDeal: false,
   });
 
   const [attributes, setAttributes] = useState<{key: string, value: string}[]>([]);
@@ -67,6 +69,8 @@ export default function ProductForm() {
               status: data.listing.status,
               description: data.listing.description,
               color: data.listing.color || '',
+              badge: data.listing.badge || '',
+              isDeal: data.listing.isDeal || false,
             });
             if (data.images && data.images.length > 0) {
               setImages(data.images.map((img: any) => ({ url: img.url })));
@@ -192,7 +196,7 @@ export default function ProductForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-cyan-300 mb-1">Stock Quantity *</label>
-              <input type="number" required value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value)})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
+              <input type="number" min="0" required value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value) || 0})} onKeyDown={(e) => { if (['-', '+', 'e', 'E'].includes(e.key)) e.preventDefault(); }} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
             
             <div>
@@ -212,7 +216,7 @@ export default function ProductForm() {
 
             <div>
               <label className="block text-sm font-medium text-cyan-300 mb-1">Price *</label>
-              <input type="number" step="0.01" required value={formData.price} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
+              <input type="number" min="0" step="0.01" required value={formData.price} onChange={e => setFormData({...formData, price: parseFloat(e.target.value) || 0})} onKeyDown={(e) => { if (['-', '+', 'e', 'E'].includes(e.key)) e.preventDefault(); }} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
             </div>
             <div>
               <label className="block text-sm font-medium text-cyan-300 mb-1">SKU</label>
@@ -220,8 +224,9 @@ export default function ProductForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-cyan-300 mb-1">Condition</label>
-              <select value={formData.condition} onChange={e => setFormData({...formData, condition: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500">
+              <label className="block text-sm font-medium text-cyan-300 mb-1">Condition *</label>
+              <select required value={formData.condition} onChange={e => setFormData({...formData, condition: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500">
+                <option value="" disabled>Select Condition</option>
                 <option value="New">New</option>
                 <option value="Like New">Like New</option>
                 <option value="Refurbished">Refurbished</option>
@@ -229,8 +234,9 @@ export default function ProductForm() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-cyan-300 mb-1">Status</label>
-              <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500">
+              <label className="block text-sm font-medium text-cyan-300 mb-1">Status *</label>
+              <select required value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500">
+                <option value="" disabled>Select Status</option>
                 <option value="published">Published</option>
                 <option value="hidden">Hidden</option>
               </select>
@@ -239,6 +245,39 @@ export default function ProductForm() {
             <div className="col-span-1 md:col-span-2">
               <label className="block text-sm font-medium text-cyan-300 mb-1">Color (Optional)</label>
               <input value={formData.color} onChange={e => setFormData({...formData, color: e.target.value})} placeholder="e.g. Space Gray, Midnight Black" className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-500" />
+            </div>
+
+            <div className="col-span-1 md:col-span-2">
+              <label className="block text-sm font-medium text-cyan-300 mb-2">Product Badge</label>
+              <div className="flex flex-wrap gap-3">
+                {['None', 'New Arrival', 'Best Seller', 'Limited Edition'].map(badgeOption => (
+                  <button
+                    key={badgeOption}
+                    type="button"
+                    onClick={() => setFormData({...formData, badge: badgeOption === 'None' ? '' : badgeOption})}
+                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                      (formData.badge === badgeOption || (badgeOption === 'None' && !formData.badge))
+                        ? 'bg-cyan-500 text-cyan-950 border-cyan-500'
+                        : 'bg-cyan-950 text-cyan-300 border-cyan-800 hover:border-cyan-500'
+                    }`}
+                  >
+                    {badgeOption}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="col-span-1 md:col-span-2 flex items-center mt-2">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <div className="relative">
+                  <input type="checkbox" className="sr-only" checked={formData.isDeal} onChange={e => setFormData({...formData, isDeal: e.target.checked})} />
+                  <div className={`block w-14 h-8 rounded-full transition-colors ${formData.isDeal ? 'bg-cyan-500' : 'bg-cyan-950 border border-cyan-700'}`}></div>
+                  <div className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${formData.isDeal ? 'transform translate-x-6' : ''}`}></div>
+                </div>
+                <div className="text-sm font-medium text-cyan-300">
+                  Mark as Deal <span className="text-cyan-500 font-normal ml-1">(Displays in Deals section)</span>
+                </div>
+              </label>
             </div>
           </div>
 

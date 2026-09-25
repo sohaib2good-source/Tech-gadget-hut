@@ -1,4 +1,4 @@
-import { ShoppingBag, Users, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { ShoppingBag, Users, AlertCircle, CheckCircle2, Loader2, Tags } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../components/admin/AuthProvider';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ interface Stats {
   activeListings: number;
   lowStock: number;
   outOfStock: number;
+  totalCategories: number;
 }
 
 export default function AdminDashboard() {
@@ -86,6 +87,18 @@ export default function AdminDashboard() {
             </div>
             <div className="p-3 bg-cyan-800 text-white rounded-xl group-hover:bg-cyan-700 transition-colors">
               <AlertCircle className="w-5 h-5 text-red-400" />
+            </div>
+          </div>
+        </Link>
+
+        <Link to="/admin/categories" className="bg-cyan-900 p-6 rounded-2xl border border-cyan-800 hover:bg-cyan-800 transition-colors block group">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-sm font-medium text-cyan-400 mb-1 group-hover:text-cyan-300">Total Categories</p>
+              <h3 className="text-3xl font-semibold text-white">{stats?.totalCategories || 0}</h3>
+            </div>
+            <div className="p-3 bg-cyan-800 text-white rounded-xl group-hover:bg-cyan-700 transition-colors">
+              <Tags className="w-5 h-5" />
             </div>
           </div>
         </Link>

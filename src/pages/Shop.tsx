@@ -76,34 +76,15 @@ export default function Shop() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-cyan-950 text-white">
-      {/* Header / Search Bar */}
-      <div className="bg-cyan-900/50 border-b border-white/5 py-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto relative flex gap-2">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-cyan-500" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search premium tech..."
-                className="block w-full pl-12 pr-6 py-4 rounded-full border border-white/10 bg-cyan-950 text-white placeholder:text-cyan-500 focus:outline-none focus:border-cyan-400 text-sm transition-all shadow-xl"
-              />
-            </div>
-            <button type="submit" className="px-8 py-4 rounded-full bg-cyan-500 text-cyan-950 font-semibold hover:bg-cyan-400 transition-colors shadow-xl">
-              Search
-            </button>
-            <button 
-              type="button" 
-              onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-              className="lg:hidden px-4 py-4 rounded-full bg-cyan-800 text-white font-semibold hover:bg-cyan-700 transition-colors shadow-xl flex items-center justify-center"
-            >
-              <Filter className="h-5 w-5" />
-            </button>
-          </form>
-        </div>
+      {/* Mobile Filter Button */}
+      <div className="lg:hidden px-4 pt-6 pb-2 w-full flex justify-end">
+        <button 
+          onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
+          className="px-6 py-3 rounded-full bg-cyan-800 text-white font-semibold hover:bg-cyan-700 transition-colors shadow-xl flex items-center gap-2"
+        >
+          <Filter className="h-5 w-5" />
+          <span>Filters</span>
+        </button>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row gap-8 items-start w-full">

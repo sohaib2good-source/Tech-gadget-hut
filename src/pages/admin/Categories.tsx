@@ -75,52 +75,49 @@ export default function CategoriesAndBrands() {
           <p className="text-sm text-cyan-400 mt-1">Note: Categories added here will be available to select when entering a new product.</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-1">
-            <div className="bg-cyan-900 rounded-2xl border border-cyan-800 p-6">
-              <h2 className="text-lg font-medium text-white mb-4">
-                {editingCatId ? 'Edit Category' : 'Add Category'}
-              </h2>
-              <form onSubmit={handleCatSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-cyan-300 mb-1">Name</label>
-                  <input 
-                    required 
-                    value={catFormData.name} 
-                    onChange={e => {
-                      const name = e.target.value;
-                      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                      if(!editingCatId) setCatFormData({ name, slug });
-                      else setCatFormData({ ...catFormData, name });
-                    }} 
-                    className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:border-cyan-500 outline-none" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-cyan-300 mb-1">Slug</label>
-                  <input 
-                    required 
-                    value={catFormData.slug} 
-                    onChange={e => setCatFormData({ ...catFormData, slug: e.target.value })} 
-                    className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:border-cyan-500 outline-none" 
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button type="submit" className="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl text-sm font-medium transition-colors">
-                    {editingCatId ? 'Update' : 'Add'}
+        <div className="flex flex-col gap-6">
+          <div className="bg-cyan-900 rounded-2xl border border-cyan-800 p-6">
+            <h2 className="text-lg font-medium text-white mb-4">
+              {editingCatId ? 'Edit Category' : 'Add Category'}
+            </h2>
+            <form onSubmit={handleCatSubmit} className="flex flex-col md:flex-row items-end gap-4">
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-medium text-cyan-300 mb-1">Name</label>
+                <input 
+                  required 
+                  value={catFormData.name} 
+                  onChange={e => {
+                    const name = e.target.value;
+                    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                    if(!editingCatId) setCatFormData({ name, slug });
+                    else setCatFormData({ ...catFormData, name });
+                  }} 
+                  className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:border-cyan-500 outline-none" 
+                />
+              </div>
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-medium text-cyan-300 mb-1">Slug</label>
+                <input 
+                  required 
+                  value={catFormData.slug} 
+                  onChange={e => setCatFormData({ ...catFormData, slug: e.target.value })} 
+                  className="w-full bg-cyan-950 border border-cyan-700 rounded-xl px-4 py-2 text-white focus:border-cyan-500 outline-none" 
+                />
+              </div>
+              <div className="flex gap-2 w-full md:w-auto">
+                <button type="submit" className="flex-1 md:w-32 bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors">
+                  {editingCatId ? 'Update' : 'Add'}
+                </button>
+                {editingCatId && (
+                  <button type="button" onClick={() => { setEditingCatId(null); setCatFormData({name: '', slug: ''}) }} className="flex-1 md:w-32 bg-cyan-800 hover:bg-cyan-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors">
+                    Cancel
                   </button>
-                  {editingCatId && (
-                    <button type="button" onClick={() => { setEditingCatId(null); setCatFormData({name: '', slug: ''}) }} className="bg-cyan-800 hover:bg-cyan-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors">
-                      Cancel
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
+                )}
+              </div>
+            </form>
           </div>
 
-          <div className="md:col-span-2">
-            <div className="bg-cyan-900 rounded-2xl border border-cyan-800 overflow-hidden">
+          <div className="bg-cyan-900 rounded-2xl border border-cyan-800 overflow-hidden">
               {loadingCats ? (
                 <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-cyan-500 animate-spin" /></div>
               ) : (
@@ -153,7 +150,6 @@ export default function CategoriesAndBrands() {
                 </table>
               )}
             </div>
-          </div>
         </div>
       </div>
     </div>

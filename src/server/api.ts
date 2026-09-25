@@ -39,6 +39,8 @@ apiRouter.get('/listings/recent', async (req, res) => {
       createdAt: listings.createdAt,
       imageUrl: images.url,
       category: categories.name,
+      badge: listings.badge,
+      isDeal: listings.isDeal,
     })
     .from(listings)
     .leftJoin(images, and(eq(listings.id, images.listingId), eq(images.isMain, true)))
@@ -91,6 +93,8 @@ apiRouter.get('/listings', async (req, res) => {
       imageUrl: images.url,
       category: categories.name,
       brand: brands.name,
+      badge: listings.badge,
+      isDeal: listings.isDeal,
     })
     .from(listings)
     .leftJoin(images, and(eq(listings.id, images.listingId), eq(images.isMain, true)))

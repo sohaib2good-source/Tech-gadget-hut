@@ -79,12 +79,14 @@ adminRouter.get('/stats', async (req, res) => {
     const activeListings = await db.select({ count: count() }).from(listings).where(eq(listings.status, 'published'));
     const lowStock = await db.select({ count: count() }).from(listings).where(sql`${listings.stock} > 0 AND ${listings.stock} <= 5`);
     const outOfStock = await db.select({ count: count() }).from(listings).where(eq(listings.stock, 0));
+    const totalCategories = await db.select({ count: count() }).from(categories);
 
     res.json({
       totalListings: totalListings[0].count,
       activeListings: activeListings[0].count,
       lowStock: lowStock[0].count,
       outOfStock: outOfStock[0].count,
+      totalCategories: totalCategories[0].count,
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch stats' });
@@ -124,6 +126,11 @@ adminRouter.post('/listings', async (req, res) => {
     if (!data.slug) {
       data.slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
     }
+    if (!data.sku) data.sku = null;
+    if (!data.brandId) data.brandId = null;
+    if (!data.color) data.color = null;
+    if (!data.badge) data.badge = null;
+
     // Set sellerId to current admin for now
     data.sellerId = (req as any).user.id;
     
@@ -178,6 +185,11 @@ adminRouter.put('/listings/:id', async (req, res) => {
     const { attributes, images: inputImages, ...listingData } = req.body;
     listingData.updatedAt = new Date();
     
+    if (!listingData.sku) listingData.sku = null;
+    if (!listingData.brandId) listingData.brandId = null;
+    if (!listingData.color) listingData.color = null;
+    if (!listingData.badge) listingData.badge = null;
+
     await db.update(listings).set(listingData).where(eq(listings.id, req.params.id));
     
     if (attributes && Array.isArray(attributes)) {

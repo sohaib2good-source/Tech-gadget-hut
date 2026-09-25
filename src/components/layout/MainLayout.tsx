@@ -1,12 +1,61 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import CartDrawer from '../CartDrawer';
+import { Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function MainLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Clear search query when not on shop page
+  useEffect(() => {
+    if (!location.pathname.includes('/shop')) {
+      setSearchQuery('');
+    } else {
+      const params = new URLSearchParams(location.search);
+      setSearchQuery(params.get('q') || '');
+    }
+  }, [location]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/shop?q=${encodeURIComponent(searchQuery)}`);
+    } else {
+      navigate(`/shop`);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-cyan-950 text-cyan-50 font-sans selection:bg-white/10 selection:text-white">
       <Header />
+      
+      {/* Global Search Bar */}
+      <div className="bg-cyan-900/50 border-b border-white/5 py-6">
+        <div className="mx-auto max-w-[1600px] px-2 sm:px-4 lg:px-6">
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto relative flex gap-2">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-cyan-500" />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search premium tech..."
+                className="block w-full pl-12 pr-6 py-3 sm:py-4 rounded-full border border-white/10 bg-cyan-950 text-white placeholder:text-cyan-500 focus:outline-none focus:border-cyan-400 text-sm transition-all shadow-xl"
+              />
+            </div>
+            <button type="submit" className="px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-cyan-500 text-cyan-950 font-semibold hover:bg-cyan-400 transition-colors shadow-xl">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+
       <main className="flex-grow">
         <Outlet />
       </main>

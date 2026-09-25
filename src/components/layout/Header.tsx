@@ -30,17 +30,17 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-cyan-950/80 backdrop-blur-xl transition-all duration-300">
-        <div className={`mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-300 ${isScrolled ? 'h-16 sm:h-20' : 'h-20'}`}>
+        <div className={`mx-auto flex w-full max-w-[1600px] items-center justify-between px-2 sm:px-4 lg:px-6 transition-all duration-300 ${isScrolled ? 'h-16 sm:h-20' : 'h-20'}`}>
           {/* Logo */}
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className={`bg-white rounded-xl flex items-center justify-center shadow-md transition-all duration-300 ${isScrolled ? 'px-3 py-1 min-w-[110px] sm:px-4 sm:py-1.5 sm:min-w-[140px]' : 'px-4 py-1.5 min-w-[140px]'}`}>
-                <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className={`w-auto object-contain mix-blend-multiply transition-all duration-300 ${isScrolled ? 'h-8 sm:h-12' : 'h-12'}`} />
+              <div className={`flex items-center justify-center transition-all duration-300 ${isScrolled ? 'min-w-[100px]' : 'min-w-[120px]'}`}>
+                <img src="/brands/logo-main.jpeg?v=2" alt="Tech Gadget Hut" className={`w-auto object-contain mix-blend-screen invert hue-rotate-180 brightness-[1.5] transition-all duration-300 ${isScrolled ? 'h-10 sm:h-12' : 'h-14 sm:h-16'}`} />
               </div>
             </Link>
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 text-cyan-400 hover:text-white transition-colors"
+              className="p-2 text-cyan-400 hover:text-white transition-colors ml-2"
             >
               <Menu className="h-6 w-6" />
             </button>
@@ -65,27 +65,10 @@ export default function Header() {
             <Link to="/shop" className="hover:text-white transition-colors">Deals</Link>
           </nav>
 
-          {/* Desktop Search */}
-          <div className="hidden lg:flex flex-1 max-w-md mx-8">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search laptops, phones, brands..."
-                className="w-full rounded-full border border-white/10 bg-white/5 px-5 py-2.5 pl-11 text-sm text-white placeholder:text-cyan-500 focus:outline-none focus:border-white/20 focus:bg-white/10 transition-all"
-              />
-              <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2">
-                <Search className="h-4 w-4 text-cyan-500" />
-              </button>
-            </form>
-          </div>
+
 
           {/* Actions */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <button className="p-2 text-cyan-400 hover:text-white transition-colors lg:hidden">
-              <Search className="h-5 w-5" />
-            </button>
             <button className="p-2 text-cyan-400 hover:text-white transition-colors hidden sm:block">
               <Heart className="h-5 w-5" />
             </button>

@@ -8,8 +8,8 @@ export default function AdminLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
     navigate('/');
+    setTimeout(() => logout(), 0);
   };
 
   const isActive = (path: string) => {

@@ -9,3 +9,4 @@
 ## Additional Directives
 - A running hero bar should be created with 20 famous brand logos (e.g., Samsung, Apple, Lenovo, Vivo, Anker, JBL, Sony, Dell, HP, Oppo, Amazfit). *(Note: Already implemented in Home.tsx)*
 - Else is locked, no setting would be changed.
+- **NEVER push to GitHub or deploy automatically.** Always ask the user for permission first and wait for explicit instructions before pushing code or deploying.

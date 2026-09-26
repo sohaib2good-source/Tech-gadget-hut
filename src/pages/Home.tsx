@@ -5,9 +5,10 @@ import { Search, ArrowRight, ShieldCheck, Tag, Zap } from 'lucide-react';
 const CarouselSection = ({ title, listings, id }: any) => {
   if (!listings || listings.length === 0) return null;
   
-  const isHotDeals = title.includes("Hot Deals");
-  const isBestSellers = title.includes("Best Sellers");
-  const isLimited = title.includes("Limited Edition");
+  const safeTitle = title || "";
+  const isHotDeals = safeTitle.includes("Hot Deals");
+  const isBestSellers = safeTitle.includes("Best Sellers");
+  const isLimited = safeTitle.includes("Limited Edition");
   
   let accentColor = "from-cyan-400 to-blue-500";
   let glowColor = "bg-cyan-500/20";
@@ -51,9 +52,9 @@ const CarouselSection = ({ title, listings, id }: any) => {
               <div className={`h-[3px] w-12 bg-gradient-to-r ${accentColor} rounded-full shadow-[0_0_10px_currentColor] ${textAccent}`} />
               <span className={`text-[11px] font-black uppercase tracking-[0.3em] ${textAccent}`}>Curated Collection</span>
             </div>
-            <h2 className={`text-4xl sm:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${accentColor}`}>{title}</h2>
+            <h2 className={`text-4xl sm:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${accentColor}`}>{safeTitle}</h2>
           </div>
-          <Link to={`/shop?q=${encodeURIComponent(title.replace(/[🔥🏆✨]/g, '').trim())}`} className="hidden sm:flex items-center gap-2 px-8 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold transition-all group backdrop-blur-md shadow-xl hover:scale-105">
+          <Link to={`/shop?q=${encodeURIComponent(safeTitle.replace(/[🔥🏆✨]/g, '').trim())}`} className="hidden sm:flex items-center gap-2 px-8 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold transition-all group backdrop-blur-md shadow-xl hover:scale-105">
             Explore All 
             <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </Link>
@@ -100,10 +101,10 @@ const CarouselSection = ({ title, listings, id }: any) => {
                   
                   <div className="mt-auto pt-6 flex items-end justify-between border-t border-white/10">
                     <div className="flex flex-col gap-1">
-                      {listing.originalPrice && (
-                        <span className="text-sm font-semibold text-white/40 line-through decoration-white/30">Rs. {listing.originalPrice.toLocaleString()}</span>
+                      {listing.originalPrice != null && (
+                        <span className="text-sm font-semibold text-white/40 line-through decoration-white/30">Rs. {Number(listing.originalPrice).toLocaleString()}</span>
                       )}
-                      <span className={`text-2xl font-black ${textAccent}`}>Rs. {listing.price.toLocaleString()}</span>
+                      <span className={`text-2xl font-black ${textAccent}`}>Rs. {listing.price != null ? Number(listing.price).toLocaleString() : 'N/A'}</span>
                     </div>
                     
                     <div className={`h-12 w-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-white/20 transition-colors shadow-lg`}>

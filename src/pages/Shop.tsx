@@ -228,9 +228,9 @@ export default function Shop() {
                     <h3 className="text-lg font-medium tracking-tight mb-4 line-clamp-2 text-white group-hover:text-cyan-300 transition-colors">{listing.title}</h3>
                     <div className="mt-auto pt-4 flex items-center justify-between border-t border-cyan-800/50">
                       <div className="flex flex-col">
-                        <span className="text-xl font-semibold text-white">Rs. {listing.price.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                        <span className="text-xl font-semibold text-white">Rs. {Number(listing.price || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                         {listing.originalPrice && (
-                          <span className="text-xs text-cyan-500 line-through">Rs. {listing.originalPrice.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                          <span className="text-xs text-cyan-500 line-through">Rs. {Number(listing.originalPrice).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                         )}
                       </div>
                       <div className="w-10 h-10 rounded-full bg-cyan-800 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-cyan-950 transition-colors">

@@ -225,15 +225,18 @@ export default function Home() {
   useEffect(() => {
     fetch('/api/categories')
       .then(res => res.json())
-      .then(data => setCategories(data));
+      .then(data => setCategories(Array.isArray(data) ? data : []))
+      .catch(() => setCategories([]));
 
     fetch('/api/listings/recent')
       .then(res => res.json())
-      .then(data => setRecentListings(data));
+      .then(data => setRecentListings(Array.isArray(data) ? data : []))
+      .catch(() => setRecentListings([]));
 
     fetch('/api/listings')
       .then(res => res.json())
-      .then(data => setAllListings(data));
+      .then(data => setAllListings(Array.isArray(data) ? data : []))
+      .catch(() => setAllListings([]));
 
     if (window.location.search.includes('scrollTo=categories')) {
       setTimeout(() => {
